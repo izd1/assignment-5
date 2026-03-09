@@ -7,9 +7,9 @@ const Url = {
 };
 
 const labelBg = {
-  bug: "bg-pink-100 border-red-300 text-red-500",
-  enhancement: "bg-blue-100 border-blue-300 text-blue-500",
-  documentation: "bg-slate-100 border-slate-300 text-slate-500",
+  "bug": "bg-pink-100 border-red-300 text-red-500",
+  "enhancement": "bg-blue-100 border-blue-300 text-blue-500",
+  "documentation": "bg-slate-100 border-slate-300 text-slate-500",
   "help wanted": "bg-yellow-100 border-yellow-300 text-yellow-500",
   "good first issue": "bg-green-100 border-green-300 text-green-500",
 };
@@ -19,6 +19,29 @@ const setActiveTab = (id) => {
     btn.classList.add("btn-outline");
   });
   document.getElementById(id).classList.remove("btn-outline");
+};
+
+const toggleErrorMsg = (show) => {
+  document.getElementById("error-msg").classList.toggle("hidden", !show);
+};
+
+const toggleModalErrorMsg = (show) => {
+  document.getElementById("modal-error-msg").classList.toggle("hidden", !show);
+};
+
+const toggleLoading = (show) => {
+  document.getElementById("spinner").classList.toggle("hidden", !show);
+  if (show) {
+    document.getElementById("card-container").innerHTML = "";
+  }
+};
+
+const toggleModalLoading = (show) => {
+  document.getElementById("modal-spinner").classList.toggle("hidden", !show);
+  if (show) {
+    document.getElementById("modal-details").innerHTML = "";
+    document.getElementById("issue-modal").showModal();
+  }
 };
 
 const fetchData = async (url) => {
@@ -31,11 +54,16 @@ const fetchData = async (url) => {
 };
 
 const loadAllData = async () => {
+  toggleErrorMsg(false);
+  toggleLoading(true);
+  setActiveTab("all-btn");
   try {
     const allIssues = await fetchData(Url.allIssues);
     renderIssues(allIssues);
   } catch (error) {
     console.error("Failed to load all issues:", error);
+    toggleLoading(false);
+    toggleErrorMsg(true);
   }
 };
 
@@ -49,6 +77,7 @@ const renderIssues = (issues) => {
   if (totalIssue === 0) {
     container.classList.remove("p-6");
     container.innerHTML = "";
+    toggleLoading(false);
     return;
   }
 
@@ -121,46 +150,13 @@ const renderIssues = (issues) => {
     `,
     )
     .join("");
+
+  toggleLoading(false);
 };
 
-document.getElementById("open-btn").addEventListener("click", async () => {
-  setActiveTab("open-btn");
-
-  try {
-    const allIssues = await fetchData(Url.allIssues);
-    const openIssues = allIssues.filter((issue) => issue.status === "open");
-    renderIssues(openIssues);
-  } catch (error) {
-    console.error("Failed to load open issues:", error);
-  }
-});
-document.getElementById("close-btn").addEventListener("click", async () => {
-  setActiveTab("close-btn");
-
-  try {
-    const allIssues = await fetchData(Url.allIssues);
-    const closedIssues = allIssues.filter((issue) => issue.status === "closed");
-    renderIssues(closedIssues);
-  } catch (error) {
-    console.error("Failed to load closed issues:", error);
-  }
-});
-
-document.getElementById("all-btn").addEventListener("click", () => {
-  loadAllData();
-});
-
-document.getElementById("search-btn").addEventListener("click", async () => {
-  try {
-    const keyword = document.getElementById("search-input").value;
-    const results = await fetchData(Url.searchIssues(keyword));
-    renderIssues(results);
-  } catch (error) {
-    console.error("Search failed:", error);
-  }
-});
-
 const renderModal = async (id) => {
+  toggleModalErrorMsg(false);
+  toggleModalLoading(true);
   try {
     const data = await fetchData(Url.singleIssue(id));
     const container = document.getElementById("modal-details");
@@ -218,10 +214,61 @@ const renderModal = async (id) => {
         </div>
       </div>
     `;
-    document.getElementById("issue-modal").showModal();
+
+    toggleModalLoading(false);
   } catch (error) {
     console.error("Failed to load issue details:", error);
+    toggleModalLoading(false);
+    toggleModalErrorMsg(true);
   }
 };
+
+document.getElementById("open-btn").addEventListener("click", async () => {
+  setActiveTab("open-btn");
+  toggleErrorMsg(false);
+  toggleLoading(true);
+  try {
+    const allIssues = await fetchData(Url.allIssues);
+    const openIssues = allIssues.filter((issue) => issue.status === "open");
+    renderIssues(openIssues);
+  } catch (error) {
+    console.error("Failed to load open issues:", error);
+    toggleLoading(false);
+    toggleErrorMsg(true);
+  }
+});
+
+document.getElementById("close-btn").addEventListener("click", async () => {
+  setActiveTab("close-btn");
+  toggleErrorMsg(false);
+  toggleLoading(true);
+  try {
+    const allIssues = await fetchData(Url.allIssues);
+    const closedIssues = allIssues.filter((issue) => issue.status === "closed");
+    renderIssues(closedIssues);
+  } catch (error) {
+    console.error("Failed to load closed issues:", error);
+    toggleLoading(false);
+    toggleErrorMsg(true);
+  }
+});
+
+document.getElementById("all-btn").addEventListener("click", () => {
+  loadAllData();
+});
+
+document.getElementById("search-btn").addEventListener("click", async () => {
+  toggleErrorMsg(false);
+  toggleLoading(true);
+  try {
+    const keyword = document.getElementById("search-input").value;
+    const results = await fetchData(Url.searchIssues(keyword));
+    renderIssues(results);
+  } catch (error) {
+    console.error("Search failed:", error);
+    toggleLoading(false);
+    toggleErrorMsg(true);
+  }
+});
 
 loadAllData();
