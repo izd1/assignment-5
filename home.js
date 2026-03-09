@@ -156,5 +156,16 @@ document.getElementById("all-btn").addEventListener("click", () => {
   loadAllData();
 });
 
+document.getElementById("search-btn").addEventListener("click", async () => {
+  
+  try {
+    const keyword = document.getElementById("search-input").value;
+    const results = await fetchData(Url.searchIssues(keyword));
+    renderIssues(results);
+  } catch (error) {
+    console.error("Search failed:", error);
+    
+  }
+});
 
 loadAllData();
