@@ -14,7 +14,12 @@ const labelBg = {
   "good first issue": "bg-green-100 border-green-300 text-green-500",
 };
 
-
+const setActiveTab = (id) => {
+  document.querySelectorAll(".filter-tab").forEach((btn) => {
+    btn.classList.add("btn-outline");
+  });
+  document.getElementById(id).classList.remove("btn-outline");
+};
 
 
 const fetchData = async (url) => {
@@ -122,6 +127,34 @@ const renderIssues = (issues) => {
 };
 
 
+document.getElementById("open-btn").addEventListener("click", async () => {
+  setActiveTab("open-btn");
+  
+  try {
+    const allIssues = await fetchData(Url.allIssues);
+    const openIssues = allIssues.filter((issue) => issue.status === "open");
+    renderIssues(openIssues);
+  } catch (error) {
+    console.error("Failed to load open issues:", error);
+    
+  }
+});
+document.getElementById("close-btn").addEventListener("click", async () => {
+  setActiveTab("close-btn");
+  
+  try {
+    const allIssues = await fetchData(Url.allIssues);
+    const closedIssues = allIssues.filter((issue) => issue.status === "closed");
+    renderIssues(closedIssues);
+  } catch (error) {
+    console.error("Failed to load closed issues:", error);
+   
+  }
+});
+
+document.getElementById("all-btn").addEventListener("click", () => {
+  loadAllData();
+});
 
 
 loadAllData();
