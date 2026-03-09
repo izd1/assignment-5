@@ -1,34 +1,84 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Github-Issue-Tracker</title>
+    <link
+      rel="shortcut icon"
+      href="./assets/github-logo.png"
+      type="image/x-icon"
+    />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Github-Issue-Tracker</title>
-  <link rel="shortcut icon" href="./assets/github-logo.png" type="image/x-icon" />
-  <!-- fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
+    <style>
+      * {
+        font-family: "Geist", sans-serif;
+      }
+    </style>
 
+    <!-- DaisyUI+Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-  <!-- daisy+tailwind -->
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <!-- custom Css  -->
-  <style>
-    * {
-      font-family: "Geist", sans-serif;
-    }
-  </style>
-  <!-- font awesome icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+    <!--Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
 
-<body>
-</body>
+  <body class="bg-base-200">
+    <!--Navbar -->
+    <header class="sticky top-0 z-10">
+      <div class="navbar bg-base-100 shadow-sm gap-8">
+        <div class="w-11/12 mx-auto flex justify-between gap-2 items-center">
+          <div class="grow">
+            <a class="flex justify-start items-center gap-2">
+              <i class="text-3xl fa-brands fa-github"></i>
+              <span class="text-sm font-bold sm:text-xl"
+                >GitHub Issue Tracker</span
+              >
+            </a>
+          </div>
+          <div class="flex gap-2">
+            <label class="input pr-0 input-bordered flex items-center gap-2">
+              <i class="fa-solid fa-search text-gray-400"></i>
+              <input
+                id="search-input"
+                type="text"
+                placeholder="Search issues..."
+                class="px-3"
+              />
+            </label>
 
+            <button id="search-btn" class="btn btn-primary">
+              <i class="fa-solid fa-search"></i>
+              <span class="hidden sm:block">Search</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <script src="home.js"></script>
+  </body>
 </html>
