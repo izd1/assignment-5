@@ -7,9 +7,9 @@ const Url = {
 };
 
 const labelBg = {
-  "bug": "bg-pink-100 border-red-300 text-red-500",
-  "enhancement": "bg-blue-100 border-blue-300 text-blue-500",
-  "documentation": "bg-slate-100 border-slate-300 text-slate-500",
+  bug: "bg-pink-100 border-red-300 text-red-500",
+  enhancement: "bg-blue-100 border-blue-300 text-blue-500",
+  documentation: "bg-slate-100 border-slate-300 text-slate-500",
   "help wanted": "bg-yellow-100 border-yellow-300 text-yellow-500",
   "good first issue": "bg-green-100 border-green-300 text-green-500",
 };
@@ -20,7 +20,6 @@ const setActiveTab = (id) => {
   });
   document.getElementById(id).classList.remove("btn-outline");
 };
-
 
 const fetchData = async (url) => {
   const response = await fetch(url);
@@ -37,7 +36,6 @@ const loadAllData = async () => {
     renderIssues(allIssues);
   } catch (error) {
     console.error("Failed to load all issues:", error);
-    
   }
 };
 
@@ -123,32 +121,28 @@ const renderIssues = (issues) => {
     `,
     )
     .join("");
-
 };
-
 
 document.getElementById("open-btn").addEventListener("click", async () => {
   setActiveTab("open-btn");
-  
+
   try {
     const allIssues = await fetchData(Url.allIssues);
     const openIssues = allIssues.filter((issue) => issue.status === "open");
     renderIssues(openIssues);
   } catch (error) {
     console.error("Failed to load open issues:", error);
-    
   }
 });
 document.getElementById("close-btn").addEventListener("click", async () => {
   setActiveTab("close-btn");
-  
+
   try {
     const allIssues = await fetchData(Url.allIssues);
     const closedIssues = allIssues.filter((issue) => issue.status === "closed");
     renderIssues(closedIssues);
   } catch (error) {
     console.error("Failed to load closed issues:", error);
-   
   }
 });
 
@@ -157,15 +151,77 @@ document.getElementById("all-btn").addEventListener("click", () => {
 });
 
 document.getElementById("search-btn").addEventListener("click", async () => {
-  
   try {
     const keyword = document.getElementById("search-input").value;
     const results = await fetchData(Url.searchIssues(keyword));
     renderIssues(results);
   } catch (error) {
     console.error("Search failed:", error);
-    
   }
 });
+
+const renderModal = async (id) => {
+  try {
+    const data = await fetchData(Url.singleIssue(id));
+    const container = document.getElementById("modal-details");
+
+    container.innerHTML = `
+      
+      <h2 class="text-2xl font-bold text-black mb-3">${data.title}</h2>
+
+      <div class="flex items-center gap-2 text-sm text-gray-500 mb-5">
+        <span class="badge text-white font-semibold rounded-full px-3 py-1 ${
+          data.status === "open" ? "bg-green-500" : "bg-purple-500"
+        }">
+          ${data.status === "open" ? "Opened" : "Closed"}
+        </span>
+        <span class="text-3xl">•</span>
+        <span>Opened by ${data.author}</span>
+        <span class="text-3xl">•</span>
+        <span>${data.createdAt ? new Date(data.createdAt).toLocaleDateString() : ""}</span>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-5">
+        ${data.labels
+          .map(
+            (label) => `
+          <span class="badge badge-soft border rounded-xl font-semibold text-xs ${
+            labelBg[label] ?? "bg-gray-100 border-gray-400 text-gray-600"
+          }">
+            ${label.toUpperCase()}
+          </span>
+        `,
+          )
+          .join("")}
+      </div>
+
+      
+      <p class="text-gray-500 text-sm leading-relaxed mb-6">${data.description}</p>
+
+     
+      <div class="bg-gray-50 rounded-lg p-4 grid grid-cols-2 mb-6">
+        <div>
+          <p class="text-gray-400 text-sm mb-1">Assignee:</p>
+          <p class="font-semibold text-gray-800">${data.assignee ? data.assignee : "Unassigned"}</p>
+        </div>
+        <div>
+          <p class="text-gray-400 text-sm mb-1">Priority:</p>
+          <span class="badge badge-soft border font-semibold text-xs px-3 ${
+            data.priority === "high"
+              ? "bg-red-100 border-red-400 text-red-600"
+              : data.priority === "medium"
+                ? "bg-yellow-50 border-yellow-400 text-yellow-600"
+                : "bg-gray-200 border-gray-400 text-gray-600"
+          }">
+            ${data.priority.toUpperCase()}
+          </span>
+        </div>
+      </div>
+    `;
+    document.getElementById("issue-modal").showModal();
+  } catch (error) {
+    console.error("Failed to load issue details:", error);
+  }
+};
 
 loadAllData();
