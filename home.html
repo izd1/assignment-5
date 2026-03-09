@@ -79,6 +79,79 @@
       </div>
     </header>
 
+    <section class="w-11/12 sm:w-3/4 mx-auto min-h-screen">
+      <div
+        class="mt-15 p-6 bg-base-100 shadow-sm border border-gray-100 flex flex-col gap-3 sm:flex-row"
+      >
+        <button id="all-btn" class="btn btn-primary filter-tab px-9">
+          All
+        </button>
+        <button
+          id="open-btn"
+          class="btn btn-primary btn-outline filter-tab px-7"
+        >
+          Open
+        </button>
+        <button
+          id="close-btn"
+          class="btn btn-primary btn-outline filter-tab px-5"
+        >
+          Closed
+        </button>
+      </div>
+
+      <div
+        class="mt-5 p-5 bg-base-100 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-5"
+      >
+        <div class="flex items-center gap-4">
+          <div
+            class="bg-purple-200 rounded-full p-2 shadow-md shadow-purple-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide text-primary lucide-aperture"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="m14.31 8 5.74 9.94" />
+              <path d="M9.69 8h11.48" />
+              <path d="m7.38 12 5.74-9.94" />
+              <path d="M9.69 16 3.95 6.06" />
+              <path d="M14.31 16H2.83" />
+              <path d="m16.62 12-5.74 9.94" />
+            </svg>
+          </div>
+          <div>
+            <p id="issue-status" class="text-gray-900 font-bold text-lg"></p>
+            <p class="text-gray-400 text-sm">
+              Track and manage your project issues
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+          <p class="flex items-center gap-1 text-sm text-gray-600 font-medium">
+            <i class="fa-solid fa-circle text-green-500 text-xs"></i> Open
+          </p>
+          <p class="flex items-center gap-1 text-sm text-gray-600 font-medium">
+            <i class="fa-solid fa-circle text-purple-500 text-xs"></i> Closed
+          </p>
+        </div>
+      </div>
+
+      <div
+        id="card-container"
+        class="shadow-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4"
+      ></div>
+    </section>
+
     <script src="home.js"></script>
   </body>
 </html>
